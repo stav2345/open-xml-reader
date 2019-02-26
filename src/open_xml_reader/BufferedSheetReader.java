@@ -84,8 +84,6 @@ public class BufferedSheetReader {
 		sharedStrings = null;
 		resultSet = null;
 		
-		// run garbage collector
-		System.gc();
 	}
 	
 	/**
@@ -368,7 +366,7 @@ public class BufferedSheetReader {
 			// try to convert, if error => we have a string and we use it directly
 			try {
 				int idx = Integer.parseInt(contents);
-				value = new XSSFRichTextString(sharedStrings.getEntryAt(idx)).toString();
+				value = new XSSFRichTextString(sharedStrings.getItemAt(idx).getString()).toString();
 			} catch (NumberFormatException e) {}
 			
 			// note that here there is not a break since also in the "s" case we

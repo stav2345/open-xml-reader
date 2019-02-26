@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
  * @author avonva
  *
  */
-public class WorkbookReader {
+public class WorkbookReader implements AutoCloseable {
 
 	private int rowCount = -1;
 	private BufferedSheetReader sheetParser;
@@ -163,17 +163,15 @@ public class WorkbookReader {
 
 	/**
 	 * Close the dataset
+	 * @throws XMLStreamException 
+	 * @throws IOException 
 	 */
-	public void close() {
-		try {
+	public void close() throws XMLStreamException, IOException {
+		
+		if (sheetParser != null)
+			sheetParser.close();
 
-			if (sheetParser != null)
-				sheetParser.close();
-
-			sheetReader.close();
-			pkg.close();
-		} catch (IOException | XMLStreamException e) {
-			e.printStackTrace();
-		}
+		sheetReader.close();
+		pkg.close();
 	}
 }
