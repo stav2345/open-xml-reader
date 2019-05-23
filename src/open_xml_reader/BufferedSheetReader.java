@@ -367,7 +367,9 @@ public class BufferedSheetReader {
 			try {
 				int idx = Integer.parseInt(contents);
 				value = new XSSFRichTextString(sharedStrings.getItemAt(idx).getString()).toString();
-			} catch (NumberFormatException e) {}
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
 			
 			// note that here there is not a break since also in the "s" case we
 			// want to perform the actions contained in the "inlineStr" case

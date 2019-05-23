@@ -459,11 +459,6 @@ public class ResultDataSet implements ResultSet, Cloneable {
 		return headers;
 	}
 
-	@SuppressWarnings("unused")
-	private String get (String string) {
-		return dataRecords.get(1).get(string);
-	}
-
 	public boolean contains (String string) {
 		return currentDataRow.containsKey(headers.get(string.toUpperCase()));
 	}
