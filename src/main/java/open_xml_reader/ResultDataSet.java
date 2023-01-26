@@ -27,6 +27,9 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.DateUtil;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * This class provides an interface for data set from Parsing raw excel data.
  * The interface is like resultset of sql data.
@@ -35,6 +38,8 @@ import org.apache.poi.ss.usermodel.DateUtil;
  * 
  */
 public class ResultDataSet implements ResultSet, Cloneable {
+	
+	private static final Logger LOGGER = LogManager.getLogger(ResultDataSet.class);
 
 	HashMap< String, String > headers;
 	ArrayList< HashMap< String, String >> dataRecords;
@@ -136,7 +141,7 @@ public class ResultDataSet implements ResultSet, Cloneable {
 		for (String value : headers.values())
 			printHeaders = printHeaders + "h" + value + ";";
 		
-		System.out.println(printHeaders);
+		LOGGER.info("Headers: ", printHeaders);
 		
 		for (HashMap<String,String> map : dataRecords) {
 			System.out.println(map);
@@ -359,13 +364,14 @@ public class ResultDataSet implements ResultSet, Cloneable {
 				ts = new Timestamp(date);
 		}
 		catch (NumberFormatException e) {
-			
+			LOGGER.error("Problem on converting value " +  value);
 			// it was a string! => format as simple string
 			try {
 				
 				ts = getTimestampFromString(value, "yyyy/MM/dd");
 				
 			} catch (ParseException e1) {
+				LOGGER.error("Problem on parsing value " +  value);
 				e1.printStackTrace();
 			}
 		}

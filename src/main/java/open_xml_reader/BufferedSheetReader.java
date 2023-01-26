@@ -15,6 +15,9 @@ import javax.xml.stream.events.XMLEvent;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Parser which can be used to parse a huge file in
  * a buffered way, without maintaining all the information
@@ -23,6 +26,8 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
  *
  */
 public class BufferedSheetReader {
+	
+	private static final Logger LOGGER = LogManager.getLogger(BufferedSheetReader.class);
 
 	// shared string table related to the sheet
 	// we are reading
@@ -368,6 +373,7 @@ public class BufferedSheetReader {
 				int idx = Integer.parseInt(contents);
 				value = new XSSFRichTextString(sharedStrings.getItemAt(idx).getString()).toString();
 			} catch (NumberFormatException e) {
+				LOGGER.error("Problem on converting cell value to string for cellType " + cellType + "and contents " + contents);
 				e.printStackTrace();
 			}
 			
@@ -413,6 +419,8 @@ public class BufferedSheetReader {
 			Integer.parseInt(value);
 			isInt = true;
 		} catch (NumberFormatException e) {
+			LOGGER.error("Value " +  value + " can not be converted to Integer" , e);
+			e.printStackTrace();
 			isInt = false;
 		}
 		
